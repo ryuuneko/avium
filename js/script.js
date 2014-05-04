@@ -41,6 +41,12 @@ if (window.File && window.FileReader && window.FileList && window.Blob){
                     trackTransforms(context);
                     var image = new Image(); 
                     image.src = e.target.result;
+
+
+        function rotate_image(angle){
+            console.log(angle);
+            // context.rotate(angle);
+        }
                     
 // ##################################################################################
         function redraw(){

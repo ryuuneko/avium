@@ -34,131 +34,137 @@ if (window.File && window.FileReader && window.FileList && window.Blob){
         
         var output = [];
         for(var i= 0, f;f=files[i];i++){
-//            f = files[i];
-//            alert(document.getElementById('img-container').childNodes.length);
-//            alert(i);
             if (document.getElementById('img-container').childNodes.length<10){
                 var reader = new FileReader();
                 reader.onload = function(e){
-                    // alert(dropBox.offsetWidth+"|"+dropBox.offsetHeight);
-
-
-                    var context = dropBox.getContext('2d');
-                    trackTransforms(context);
                     var image = new Image(); 
                     image.src = e.target.result;
-                    
-// ##################################################################################
-        function redraw(){
-            var p1 = context.transformedPoint(0,0);
-            var p2 = context.transformedPoint(dropBox.width,dropBox.height);
-            context.clearRect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y);
-            context.drawImage(image,200,50);
-        }
 
-        redraw();
-        
-        var lastX=dropBox.width/2, lastY=dropBox.height/2;
-        var dragStart,dragged;
-        dropBox.addEventListener('mousedown',function(evt){
-            document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = 'none';
-            lastX = evt.offsetX || (evt.pageX - dropBox.offsetLeft);
-            lastY = evt.offsetY || (evt.pageY - dropBox.offsetTop);
-            dragStart = context.transformedPoint(lastX,lastY);
-            dragged = false;
-        },false);
-        dropBox.addEventListener('mousemove',function(evt){
-            lastX = evt.offsetX || (evt.pageX - dropBox.offsetLeft);
-            lastY = evt.offsetY || (evt.pageY - dropBox.offsetTop);
-            dragged = true;
-            if (dragStart){
-                var pt = context.transformedPoint(lastX,lastY);
-                context.translate(pt.x-dragStart.x,pt.y-dragStart.y);
-                redraw();
-            }
-        },false);
-        dropBox.addEventListener('mouseup',function(evt){
-            dragStart = null;
-            if (!dragged) zoom(evt.shiftKey ? -1 : 1 );
-        },false);
+                    var filters = ['grayscale', 'invert', 'remove-white', 'sepia', 'sepia2',
+                      'brightness', 'noise', 'gradient-transparency', 'pixelate',
+                      'blur', 'sharpen', 'emboss', 'tint'];
+                    var canvas = new fabric.Canvas('img-container');
+                    var img = new fabric.Image(image);
+                    canvas.add(img);
+                    var f = fabric.Image.filters;
 
-        var scaleFactor = 1.1;
-        var zoom = function(clicks){
-            var pt = context.transformedPoint(lastX,lastY);
-            context.translate(pt.x,pt.y);
-            var factor = Math.pow(scaleFactor,clicks);
-            context.scale(factor,factor);
-            context.translate(-pt.x,-pt.y);
-            redraw();
-        }
+                    function applyFilter(idx, filter){
+                        var img = canvas.getActiveObject();
+                        img.filters[idx]=filter;
+                        img.applyFilters(canvas.renderAll.bind(canvas));
+                    }
 
-        var handleScroll = function(evt){
-            var delta = evt.wheelDelta ? evt.wheelDelta/40 : evt.detail ? -evt.detail : 0;
-            if (delta) zoom(delta);
-            return evt.preventDefault() && false;
-        };
-        dropBox.addEventListener('DOMMouseScroll',handleScroll,false);
-        dropBox.addEventListener('mousewheel',handleScroll,false);
-    
-    
-    // Adds context.getTransform() - returns an SVGMatrix
-    // Adds context.transformedPoint(x,y) - returns an SVGPoint
-    function trackTransforms(context){
-        var svg = document.createElementNS("http://www.w3.org/2000/svg",'svg');
-        var xform = svg.createSVGMatrix();
-        context.getTransform = function(){ return xform; };
-        
-        var savedTransforms = [];
-        var save = context.save;
-        context.save = function(){
-            savedTransforms.push(xform.translate(0,0));
-            return save.call(context);
-        };
-        var restore = context.restore;
-        context.restore = function(){
-            xform = savedTransforms.pop();
-            return restore.call(context);
-        };
+                    $('#grayscale').click(function(){
+                        applyFilter(0, this.checked && new f.Grayscale());
+                    });
 
-        var scale = context.scale;
-        context.scale = function(sx,sy){
-            xform = xform.scaleNonUniform(sx,sy);
-            return scale.call(context,sx,sy);
-        };
-        var rotate = context.rotate;
-        context.rotate = function(radians){
-            xform = xform.rotate(radians*180/Math.PI);
-            return rotate.call(context,radians);
-        };
-        var translate = context.translate;
-        context.translate = function(dx,dy){
-            xform = xform.translate(dx,dy);
-            return translate.call(context,dx,dy);
-        };
-        var transform = context.transform;
-        context.transform = function(a,b,c,d,e,f){
-            var m2 = svg.createSVGMatrix();
-            m2.a=a; m2.b=b; m2.c=c; m2.d=d; m2.e=e; m2.f=f;
-            xform = xform.multiply(m2);
-            return transform.call(context,a,b,c,d,e,f);
-        };
-        var setTransform = context.setTransform;
-        context.setTransform = function(a,b,c,d,e,f){
-            xform.a = a;
-            xform.b = b;
-            xform.c = c;
-            xform.d = d;
-            xform.e = e;
-            xform.f = f;
-            return setTransform.call(context,a,b,c,d,e,f);
-        };
-        var pt  = svg.createSVGPoint();
-        context.transformedPoint = function(x,y){
-            pt.x=x; pt.y=y;
-            return pt.matrixTransform(xform.inverse());
-        }
-    }
-// ##################################################################################
+                    $('#invert').click(function() {
+                    applyFilter(1, this.checked && new f.Invert());
+                    });
+
+                    $('#remove-white').click(function () {
+                        applyFilter(2, this.checked && new f.RemoveWhite({
+                        threshold: $('#remove-white-threshold').value,
+                        distance: $('#remove-white-distance').value
+                        }));
+
+                    });
+
+                    // $('remove-white-threshold').change(function() {
+                    //     applyFilterValue(2, 'threshold', this.value);
+                    // });
+
+                    // $('remove-white-distance').change(function() {
+                    //     applyFilterValue(2, 'distance', this.value);
+                    // });
+
+                    $('#sepia').click(function() {
+                        applyFilter(3, this.checked && new f.Sepia());
+                    });
+
+                    $('#sepia2').click(function() {
+                        applyFilter(4, this.checked && new f.Sepia2());
+                    });
+
+                    $('#brightness').click(function () {
+                        applyFilter(5, this.checked && new f.Brightness({
+                          brightness: parseInt($('#brightness-value').value, 10)
+                        }));
+                    });
+
+                    // $('brightness-value').change(function() {
+                    //     applyFilterValue(5, 'brightness', parseInt(this.value, 10));
+                    // });
+
+                    $('#noise').click(function () {
+                        applyFilter(6, this.checked && new f.Noise({
+                          noise: parseInt($('#noise-value').value, 10)
+                        }));
+                    });
+
+                    // $('noise-value').change(function() {
+                    //     applyFilterValue(6, 'noise', parseInt(this.value, 10));
+                    // });
+
+                    $('#gradient-transparency').click(function () {
+                        applyFilter(7, this.checked && new f.GradientTransparency({
+                          threshold: parseInt($('#gradient-transparency-value').value, 10)
+                        }));
+                    });
+
+                    // $('gradient-transparency-value').change(function() {
+                    //     applyFilterValue(7, 'threshold', parseInt(this.value, 10));
+                    // });
+
+                    $('#pixelate').click(function() {
+                        applyFilter(8, this.checked && new f.Pixelate({
+                          blocksize: parseInt($('#pixelate-value').value, 10)
+                        }));
+                    });
+
+                    // $('pixelate-value').change(function() {
+                    //     applyFilterValue(8, 'blocksize', parseInt(this.value, 10));
+                    // });
+
+                    $('#blur').click(function() {
+                        applyFilter(9, this.checked && new f.Convolute({
+                          matrix: [ 1/9, 1/9, 1/9,
+                                    1/9, 1/9, 1/9,
+                                    1/9, 1/9, 1/9 ]
+                        }));
+                    });
+
+                    $('#sharpen').click(function() {
+                        applyFilter(10, this.checked && new f.Convolute({
+                          matrix: [  0, -1,  0,
+                                    -1,  5, -1,
+                                     0, -1,  0 ]
+                        }));
+                    });
+
+                    $('#emboss').click(function() {
+                        applyFilter(11, this.checked && new f.Convolute({
+                          matrix: [ 1,   1,  1,
+                                    1, 0.7, -1,
+                                   -1,  -1, -1 ]
+                        }));
+                    });
+
+                    $('#tint').click(function() {
+                        applyFilter(12, this.checked && new f.Tint({
+                          color: document.getElementById('tint-color').value,
+                          opacity: parseFloat(document.getElementById('tint-opacity').value)
+                        }));
+                    });
+
+                    // $('tint-color').change(function() {
+                    //     applyFilterValue(12, 'color', this.value);
+                    // });
+
+                    // $('tint-opacity').change(function() {
+                    //     applyFilterValue(12, 'opacity', parseFloat(this.value));
+                    // });
+                
                 }
                 reader.readAsDataURL(f)
             }
