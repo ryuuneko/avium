@@ -6,6 +6,7 @@ var w = window,
     x = w.innerWidth || e.clientWidth || g.clientWidth,
     y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
+
 var dropBox = document.getElementById('img-container');
 dropBox.width = x; dropBox.height = y;
 
@@ -40,13 +41,61 @@ if (window.File && window.FileReader && window.FileList && window.Blob){
                     var image = new Image(); 
                     image.src = e.target.result;
 
+                    console.log(image.height);
+
                     var filters = ['grayscale', 'invert', 'remove-white', 'sepia', 'sepia2',
                       'brightness', 'noise', 'gradient-transparency', 'pixelate',
                       'blur', 'sharpen', 'emboss', 'tint'];
                     var canvas = new fabric.Canvas('img-container');
                     var img = new fabric.Image(image);
+                    
+                    scaleCoeff = scaleImage(x,y,image.width,image.height); 
+
+                    // alert(scaleCoeff);
+                    img.scale(scaleCoeff);
                     canvas.add(img);
+
+// mouse wheel handle
+
+                   $(canvas.wrapperEl).on('mousewheel', function(e){
+                         var target = canvas.findTarget(e);
+                         // console.log(e.originalEvent.wheelDelta);
+                        var delta = e.originalEvent.wheelDelta / 1200;
+                        // console.log(delta);
+                         if (target) {
+                            target.scaleX += delta;
+                            target.scaleY += delta;
+                            
+                            // constrain
+                            if (target.scaleX < 0.1) {
+                                target.scaleX = 0.1;
+                                target.scaleY = 0.1;
+                            }
+                            // constrain
+                            if (target.scaleX > 10) {
+                                target.scaleX = 10;
+                                target.scaleY = 10;
+                            }
+                            target.setCoords();
+                            canvas.renderAll();
+                            return false;
+                        }
+                   });
+
+// mouse wheel handle
                     var f = fabric.Image.filters;
+
+                    function scaleImage(x,y,ix,iy){
+                        scaleCoeffX = x/ix;
+                        scaleCoeffY = y/iy;
+                        if (scaleCoeffX>scaleCoeffY){
+                            scaleCoeff = scaleCoeffY;
+                        }
+                        else{
+                            scaleCoeff = scaleCoeffX;
+                        }
+                        return scaleCoeff;
+                    }
 
                     function applyFilter(idx, filter){
                         var img = canvas.getActiveObject();
