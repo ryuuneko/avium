@@ -4,13 +4,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Avium</title>
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/jquery.Jcrop.css" type="text/css" />
     <script src="./assets/js/jquery-2.0.1.min.js"></script>
     <script src="./assets/js/script.js"></script>
     <script src="./assets/js/fabric.js"></script>
+    <script src="./assets/js/jquery.Jcrop.min.js"></script>
 
 </head>
 	<body>
 	<div id="menu">
+	<input type='button' value="apply filters" id="apply">
 		<p>
 		<label><span>Grayscale:</span> <input type="checkbox" id="grayscale" ></label>
 		</p>
@@ -24,32 +27,35 @@
 		<label><span>Sepia2:</span> <input type="checkbox" id="sepia2" ></label>
 		</p>
 		<p>
-		<!-- <label><span>Remove white:</span> <input type="checkbox" id="remove-white" disabled></label>
+		<input type="button" value="select" id="imageCrop"><input type="button" value="cancel" id="cancel"><input type="button" value="Crop" id="crop">
+		</p>
+		
+		<p><label><span>Remove white:</span> <input type="checkbox" id="remove-white" ></label>
 		<br>
-		<label>Threshold: <input type="range" id="remove-white-threshold" value="60" min="0" max="255" disabled></label>
+		<label>Threshold: <input type="range" id="remove-white-threshold" value="60" min="0" max="255" ></label>
 		<br>
-		<label>Distance: <input type="range" id="remove-white-distance" value="10" min="0" max="255" disabled ></label>
+		<label>Distance: <input type="range" id="remove-white-distance" value="10" min="0" max="255"  ></label>
 		</p>
 		<p>
-		<label><span>Brightness:</span> <input type="checkbox" id="brightness" disabled></label>
+		<label><span>Brightness:</span> <input type="checkbox" id="brightness" ></label>
 		<br>
-		<label>Value: <input type="range" id="brightness-value" value="100" min="0" max="255" disabled></label>
+		<label>Value: <input type="range" id="brightness-value" value="100" min="0" max="255" ></label>
 		</p>
 		<p>
-		<label><span>Noise:</span> <input type="checkbox" id="noise" disabled></label>
+		<label><span>Noise:</span> <input type="checkbox" id="noise" ></label>
 		<br>
-		<label>Value: <input type="range" id="noise-value" value="100" min="0" max="1000" disabled></label>
+		<label>Value: <input type="range" id="noise-value" value="100" min="0" max="1000" ></label>
 		</p>
 		<p>
-		<label><span>GradientTransparency:</span> <input type="checkbox" id="gradient-transparency" disabled></label>
+		<label><span>GradientTransparency:</span> <input type="checkbox" id="gradient-transparency" ></label>
 		<br>
-		<label>Value: <input type="range" id="gradient-transparency-value" value="100" min="0" max="255" disabled></label>
+		<label>Value: <input type="range" id="gradient-transparency-value" value="100" min="0" max="255" ></label>
 		</p>
 		<p>
-		<label><span>Pixelate</span> <input type="checkbox" id="pixelate" disabled></label>
+		<label><span>Pixelate</span> <input type="checkbox" id="pixelate" ></label>
 		<br>
-		<label>Value: <input type="range" id="pixelate-value" value="4" min="2" max="20" disabled></label>
-		</p> -->
+		<label>Value: <input type="range" id="pixelate-value" value="4" min="2" max="20" ></label>
+		</p> 
 		<p>
 		<label><span>Blur:</span> <input type="checkbox" id="blur" ></label>
 		</p>
@@ -62,7 +68,10 @@
 		<p>
 		<label><span>Tint:</span> <input type="checkbox" id="tint" ></label><br>
 		<label>Color: <input type="color" id="tint-color" value=""></label><br>
-		<!-- <label>Opacity: <input type="range" id="tint-opacity" min="0" max="1" value="1" step="0.1" disabled></label><br> -->
+		<label>Opacity: <input type="range" id="tint-opacity" min="0" max="1" value="1" step="0.1" ></label><br>
+		</p>
+		<p>
+			 <input type="button" id="test" value="test">
 		</p>
 	</div> <!-- menu -->
 	
