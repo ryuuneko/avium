@@ -1,81 +1,96 @@
-
 <!DOCTYPE HTML>
 <html lang="en"><head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Avium</title>
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
-    <link rel="stylesheet" href="./assets/css/jquery.Jcrop.css" type="text/css" />
     <script src="./assets/js/jquery-2.0.1.min.js"></script>
-    <script src="./assets/js/script.js"></script>
     <script src="./assets/js/fabric.js"></script>
-    <script src="./assets/js/jquery.Jcrop.min.js"></script>
+    <script src="./assets/js/script.js"></script>
 
 </head>
-	<body>
-	<div id="menu">
-	<input type='button' value="apply filters" id="apply">
-		<p>
-		<label><span>Grayscale:</span> <input type="checkbox" id="grayscale" ></label>
-		</p>
-		<p>
-		<label><span>Invert:</span> <input type="checkbox" id="invert" ></label>
-		</p>
-		<p>
-		<label><span>Sepia:</span> <input type="checkbox" id="sepia" ></label>
-		</p>
-		<p>
-		<label><span>Sepia2:</span> <input type="checkbox" id="sepia2" ></label>
-		</p>
-		<p>
-		<input type="button" value="select" id="imageCrop"><input type="button" value="cancel" id="cancel"><input type="button" value="Crop" id="crop">
-		</p>
+<body>
+<div id="wrapper">
+	<a href="." id="logo" title=""><img src="./assets/img/logo-edit.png" alt=""></a>
+
+	<div class="controls left">
+		<label class="control" title="Invert"><input type="checkbox" id="invert"><span><i class="icon-color-adjust"></i></span></label>
+
+		<label class="control" title="Grayscale"><input type="checkbox" id="grayscale"><span><i class="icon-soundcloud"></i></span></label>
 		
-		<p><label><span>Remove white:</span> <input type="checkbox" id="remove-white" ></label>
-		<br>
-		<label>Threshold: <input type="range" id="remove-white-threshold" value="60" min="0" max="255" ></label>
-		<br>
-		<label>Distance: <input type="range" id="remove-white-distance" value="10" min="0" max="255"  ></label>
-		</p>
-		<p>
-		<label><span>Brightness:</span> <input type="checkbox" id="brightness" ></label>
-		<br>
-		<label>Value: <input type="range" id="brightness-value" value="100" min="0" max="255" ></label>
-		</p>
-		<p>
-		<label><span>Noise:</span> <input type="checkbox" id="noise" ></label>
-		<br>
-		<label>Value: <input type="range" id="noise-value" value="100" min="0" max="1000" ></label>
-		</p>
-		<p>
-		<label><span>GradientTransparency:</span> <input type="checkbox" id="gradient-transparency" ></label>
-		<br>
-		<label>Value: <input type="range" id="gradient-transparency-value" value="100" min="0" max="255" ></label>
-		</p>
-		<p>
-		<label><span>Pixelate</span> <input type="checkbox" id="pixelate" ></label>
-		<br>
-		<label>Value: <input type="range" id="pixelate-value" value="4" min="2" max="20" ></label>
-		</p> 
-		<p>
-		<label><span>Blur:</span> <input type="checkbox" id="blur" ></label>
-		</p>
-		<p>
-		<label><span>Sharpen:</span> <input type="checkbox" id="sharpen" ></label>
-		</p>
-		<p>
-		<label><span>Emboss:</span> <input type="checkbox" id="emboss" ></label>
-		</p>
-		<p>
-		<label><span>Tint:</span> <input type="checkbox" id="tint" ></label><br>
-		<label>Color: <input type="color" id="tint-color" value=""></label><br>
-		<label>Opacity: <input type="range" id="tint-opacity" min="0" max="1" value="1" step="0.1" ></label><br>
-		</p>
-		<p>
-			 <input type="button" id="test" value="test">
-		</p>
-	</div> <!-- menu -->
-	
-	<canvas id="img-container"></canvas>
-	
-	</body>
+		<div class="pull">
+			<label class="control range" title="Hue/Saturation/Lightness"><input type="checkbox" id="hsl"><span><i class="icon-spinner2"></i></span></label>
+			<div>
+				<div class="range">
+					<label for="hue-value">Hue</label>
+					<input type="range" id="hue-value" value="0" min="-180" max="180" >
+				</div>
+				<div class="range">
+					<label for="saturation-value">Saturation</label>
+					<input type="range" id="saturation-value" value="0" min="-100" max="100" >
+				</div>
+				<div class="range">
+					<label for="lightness-value">Lightness</label>
+					<input type="range" id="lightness-value" value="0" min="-100" max="100" >
+				</div>
+			</div>
+		</div>
+
+		<div class="pull">
+			<label class="control range" title="Brightness/Contrast"><input type="checkbox" id="brightness"><span><i class="icon-adjust"></i></span></label>
+			<div>
+				<div class="range">
+					<label for="brightness-value">Brightness</label>
+					<input type="range" id="brightness-value" value="0" min="-150" max="150" >
+				</div>
+				<div class="range">
+					<label for="contrast-value">Contrast</label>
+					<input type="range" id="contrast-value" value="0" min="-100" max="500" >
+				</div>
+			</div>
+		</div>
+
+		<div class="pull">
+			<label class="control" title="Rotate"><input type="checkbox" id="rotate"><span><i class="icon-ccw"></i></span></label>
+			<div>
+				<div class="range">
+					<label for="rotate-value">Choose angle</label>
+					<input type="range" id="rotate-value" value="0" min="0" max="360" >
+				</div>
+			</div>
+		</div>
+
+		<div class="pull nocheck">
+			<div class="control" title="Flip"><span><i class="icon-houzz"></i></span></div>
+			<div class="group">
+				<label class="control" title="Flip Horizontally"><input type="checkbox" id="flipx"><span><i class="icon-resize-horizontal"></i></span></label>
+				<label class="control" title="Flip Vertically"><input type="checkbox" id="flipy"><span><i class="icon-resize-vertical"></i></span></label>
+			</div>
+		</div>
+
+		<div class="pull nocheck" id="filters">
+			<div class="control" title="Filters"><span><i class="icon-star-half-alt"></i></span></div>
+			<div class="group filters">
+				<label class="control" title="Sepia"><input type="checkbox" id="sepia"><span>Sepia</span></label>
+				<label class="control" title="Blur"><input type="checkbox" id="blur"><span>Blur</span></label>
+				<label class="control" title="Sharpen"><input type="checkbox" id="sharpen"><span>Sharpen</span></label>
+				<label class="control" title="Emboss"><input type="checkbox" id="emboss"><span>Emboss</span></label>
+			</div>
+		</div>
+	</div>
+
+	<div class="controls right">
+		<div class="control upload" title="Upload">
+			<input type="file" id="upload" title="Upload">
+			<span><i class="icon-upload"></i></span>
+		</div>
+		<button type="button" id="apply" class="control" title="Download">
+			<span><i class="icon-download"></i></span>
+		</button>
+	</div>
+	<div id="canvas">
+		<div class="drop">Drop Image Here</div>
+		<canvas id="c"></canvas>
+	</div>
+</div>
+</body>
 </html>
