@@ -1,39 +1,355 @@
+@font-face {
+  font-family: 'fontello';
+  src: url('../font/fontello.eot?22897601');
+  src: url('../font/fontello.eot?22897601#iefix') format('embedded-opentype'), url('../font/fontello.woff?22897601') format('woff'), url('../font/fontello.ttf?22897601') format('truetype'), url('../font/fontello.svg?22897601#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?22897601#fontello') format('svg');
+  }
+}
+*/
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+
+  font-variant: normal;
+  text-transform: none;
+  /* fix buttons height, for twitter bootstrap */
+
+  line-height: 1em;
+  /* Animation center compensation - margins should be symmetric */
+
+  /* remove if not needed */
+
+  margin-left: .2em;
+  /* you can be more comfortable with increased icons size */
+
+  /* font-size: 120%; */
+
+  /* Uncomment for 3D effect */
+
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+
+}
+.icon-star-half-alt:before {
+  content: '\e803';
+}
+/* '' */
+.icon-houzz:before {
+  content: '\e810';
+}
+/* '' */
+.icon-upload:before {
+  content: '\e808';
+}
+/* '' */
+.icon-code:before {
+  content: '\e811';
+}
+/* '' */
+.icon-resize-vertical:before {
+  content: '\e812';
+}
+/* '' */
+.icon-resize-horizontal:before {
+  content: '\e813';
+}
+/* '' */
+.icon-zoom-in:before {
+  content: '\e805';
+}
+/* '' */
+.icon-zoom-out:before {
+  content: '\e806';
+}
+/* '' */
+.icon-cw:before {
+  content: '\e80c';
+}
+/* '' */
+.icon-ccw:before {
+  content: '\e80d';
+}
+/* '' */
+.icon-download:before {
+  content: '\e807';
+}
+/* '' */
+.icon-barcode:before {
+  content: '\e800';
+}
+/* '' */
+.icon-adjust:before {
+  content: '\e801';
+}
+/* '' */
+.icon-floppy:before {
+  content: '\e809';
+}
+/* '' */
+.icon-soundcloud:before {
+  content: '\e802';
+}
+/* '' */
+.icon-download-1:before {
+  content: '\e80e';
+}
+/* '' */
+.icon-upload-1:before {
+  content: '\e80f';
+}
+/* '' */
+.icon-color-adjust:before {
+  content: '\e80b';
+}
+/* '' */
+.icon-spinner2:before {
+  content: '\e804';
+}
+/* '' */
+.icon-crop:before {
+  content: '\e80a';
+}
+/* '' */@font-face {
+  font-family: 'comfortaaregular';
+  src: url('../font/comfortaa-regular-webfont.eot');
+  src: url('../font/comfortaa-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../font/comfortaa-regular-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+input[type='range'] {
+  -webkit-appearance: none;
+  background-color: #dfe4de;
+  height: 2px;
+  vertical-align: middle;
+}
+input[type='range']:active,
+input[type='range']:focus {
+  outline: none;
+}
+input[type='range']::-moz-range-track {
+  -moz-appearance: none;
+  background-color: #dfe4de;
+  height: 2px;
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  border-radius: 20px;
+  background: #fff;
+  border: 8px solid #8a3a3a;
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
+input[type='range']::-moz-range-thumb {
+  -moz-appearance: none;
+  border-radius: 20px;
+  background: #fff;
+  border: 8px solid #8a3a3a;
+  height: 6px;
+  width: 6px;
+  cursor: pointer;
+}
 html,
-body,
-main {
+body {
   height: 100%;
   min-height: 100%;
   margin: 0;
   padding: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+body {
+  background: #6a6671;
+  position: relative;
 }
 #wrapper {
   height: 100%;
   position: relative;
   overflow: hidden;
 }
-body {
-  /*background: #eee;*/
+#logo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+}
+.controls {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  height: 100%;
+  min-height: 100%;
+}
+.controls.right {
+  top: 165px;
+  left: auto;
+  right: 10px;
+}
+.control {
+  display: block;
+  width: 69px;
+  height: 69px;
+  border: 0;
+  overflow: hidden;
+  margin: 0 0 10px;
+  padding: 0;
+  background: transparent;
+}
+.control:hover > span {
+  background: #87858c;
+  color: #b9b8bd;
+}
+.control:active {
+  outline: none;
+}
+.control > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: rgba(135, 133, 140, 0.7);
+  border: 0;
+  text-align: center;
+  line-height: 69px;
+  font-size: 45px;
+  color: #b9b8bd;
+}
+.control input[type="checkbox"] {
+  display: none;
+}
+.control input[type="checkbox"]:checked + span {
+  background: #87858c;
+  color: #dfe4de;
+  text-shadow: 1px 1px 0 #73707a, 2px 2px 0 #73707a, 3px 3px 0 #73707a, 4px 4px 0 #73707a, 5px 5px 0 #73707a, 6px 6px 0 #73707a, 7px 7px 0 #73707a, 8px 8px 0 #73707a, 9px 9px 0 #73707a, 10px 10px 0 #73707a, 11px 11px 0 #73707a, 12px 12px 0 #73707a, 13px 13px 0 #73707a, 14px 14px 0 #73707a, 15px 15px 0 #73707a, 16px 16px 0 #73707a, 17px 17px 0 #73707a, 18px 18px 0 #73707a, 19px 19px 0 #73707a, 20px 20px 0 #73707a, 21px 21px 0 #73707a, 22px 22px 0 #73707a, 23px 23px 0 #73707a, 24px 24px 0 #73707a, 25px 25px 0 #73707a, 26px 26px 0 #73707a, 27px 27px 0 #73707a, 28px 28px 0 #73707a, 29px 29px 0 #73707a, 30px 30px 0 #73707a, 31px 31px 0 #73707a, 32px 32px 0 #73707a, 33px 33px 0 #73707a, 34px 34px 0 #73707a, 35px 35px 0 #73707a, 36px 36px 0 #73707a, 37px 37px 0 #73707a, 38px 38px 0 #73707a, 39px 39px 0 #73707a, 40px 40px 0 #73707a, 41px 41px 0 #73707a, 42px 42px 0 #73707a, 43px 43px 0 #73707a, 44px 44px 0 #73707a, 45px 45px 0 #73707a, 46px 46px 0 #73707a, 47px 47px 0 #73707a, 48px 48px 0 #73707a, 49px 49px 0 #73707a, 50px 50px 0 #73707a,  0 0 0 #000;
+}
+label.control,
+button.control,
+div.control.upload {
+  cursor: pointer;
+}
+.pull {
   position: relative;
 }
-canvas {
-  display: block;
+.pull.nocheck {
+  cursor: e-resize;
 }
-canvas:active {
-  cursor: move;
+.pull:hover .control + div {
+  height: 69px;
+  opacity: 1;
+  pointer-events: auto;
 }
-
-#menu{
-  padding:10px;
-  width: 230px;
-  height: 100%;
+.pull .control + div {
   position: absolute;
-  z-index: 999;
-  background: #e6e6e6;
+  left: 69px;
+  top: 0;
+  white-space: nowrap;
+  height: 0;
+  pointer-events: none;
+  opacity: 0;
+  -webkit-transition: opacity 250ms ease-in;
+  -moz-transition: opacity 250ms ease-in;
+  -o-transition: opacity 250ms ease-in;
+  transition: opacity 250ms ease-in;
 }
-
-input:disabled{
-  opacity: 0.5;
+.pull .control + div.filters .control > span {
+  font-family: comfortaaregular, sans-serif;
+  font-size: 14px;
 }
-input:disabled:before{
-  content:"DISABLED!";
+.pull .control + div .range {
+  height: 69px;
+  width: 360px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0 0 0 10px;
+  padding: 12px;
+  background: rgba(135, 133, 140, 0.5);
+  color: #fff;
+}
+.pull .control + div .range label {
+  display: block;
+  font-family: comfortaaregular, sans-serif;
+  font-size: 14px;
+  margin: 0 0 5px;
+}
+.pull .control + div .range input[type="range"] {
+  width: 100%;
+}
+.pull .control + div .control {
+  display: inline-block;
+  margin: 0 -0.3em 0 10px;
+}
+#upload {
+  opacity: 0;
+  width: 69px;
+  height: 69px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 0 0 69px;
+  margin: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  cursor: pointer;
+}
+input[type="button"] {
+  cursor: pointer;
+}
+#filters {
+  position: absolute;
+  bottom: 10px;
+}
+#canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  height: 100%;
+  min-height: 100%;
+  width: 100%;
+  display: table;
+}
+#canvas .drop {
+  width: 100%;
+  vertical-align: middle;
+  text-align: center;
+  z-index: 10;
+  font-family: comfortaaregular, sans-serif;
+  font-size: 70px;
+  color: #514e56;
+  text-shadow: 0px -1px 0px #28335f;
+  pointer-events: none;
+  display: none;
+}
+#canvas .drop.show {
+  display: table-cell;
+}
+#c {
+  width: 100%;
+  height: 100%;
+}
+#c:active {
+  cursor: move;
 }
