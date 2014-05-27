@@ -372,6 +372,17 @@ $(function() {
             $("#new").click(function(){
                 $("#canvas").find(".drop").addClass("show");
                 $("#canvas").find(".upper-canvas ").remove();
+                $("#invert").prop('checked',false);
+                $("#grayscale").prop('checked',false);
+                $("#hsl").prop('checked',false);
+                $("#brightness").prop('checked',false);
+                $("#rotate").prop('checked',false);
+                $("#flipx").prop('checked',false);
+                $("#flipy").prop('checked',false);
+                $("#sepia").prop('checked',false);
+                $("#blur").prop('checked',false);
+                $("#sharpen").prop('checked',false);
+                $("#emboss").prop('checked',false);
                 canvas.item(0).remove();
             });
 
@@ -636,6 +647,9 @@ $(function() {
 
 
             $("#rotate").click(function() {
+                if (croped==true){
+                    return false;
+                }
                 canvas.setActiveObject(canvas.item(0));
                 var img = canvas.getActiveObject(),
                     angle = 0;
