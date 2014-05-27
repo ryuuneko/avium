@@ -270,6 +270,7 @@ $(function() {
     x = w.innerWidth || e.clientWidth || g.clientWidth,
     y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
+    var croped=false;
     var dropBox = document.getElementById("c");
     dropBox.width = x; dropBox.height = y;
     console.log(dropBox)
@@ -284,6 +285,9 @@ $(function() {
 
     $("#upload").on("change", function(e) {
         handleFileSelect(e);
+        $("#canvas").find(".drop").addClass("show");
+        $("#canvas").find(".upper-canvas ").remove();
+        canvas.item(0).remove();
         return false;
     });
 
@@ -411,7 +415,10 @@ $(function() {
 //////////////////////////////////////////////////////////////////// Image Crop
 
            $('#imageCrop').click(function(){
-
+            if (croped == true){
+                alert();
+                return false;
+            }
             if ($("#rotate").prop("checked")){
                 alert("can't crop rotated image :'(");
                 return false;
@@ -427,6 +434,7 @@ $(function() {
                });
                canvas.add(crop);
                canvas.setActiveObject(canvas.item(1));
+               croped = true;
 
                $("#crop").click(function(){
                     var selection = canvas.item(1),
@@ -501,11 +509,14 @@ $(function() {
                 canvas.setHeight(ch);
                 console.log("cw:",cw,"ch:",ch);
                 canvas = create(image,100,100);
+                croped = false;
 
             });
 
                $("#cancel").click(function(){
-                    canvas.item(1).remove();        
+                    canvas.item(1).remove();   
+                    croped = false;
+
                     return;
                });
       
