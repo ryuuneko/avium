@@ -261,22 +261,18 @@ fabric.Image.filters.SepiaTone = fabric.util.createClass(fabric.Image.filters.Ba
         });
     }
 });
-//////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////
+
 $(function() {
     var w = window,
-        d = document,
-        e = d.documentElement,
-        g = d.getElementsByTagName("body")[0],
-        x = w.innerWidth || e.clientWidth || g.clientWidth,
-        y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName("body")[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
     var dropBox = document.getElementById("c");
     dropBox.width = x; dropBox.height = y;
-
+    console.log(dropBox)
     if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
         alert("Браузер не поддерживает HTML5");
         return false;
@@ -284,7 +280,6 @@ $(function() {
 
     dropBox.addEventListener("dragover", handleFileEnter, false);
     dropBox.addEventListener("dragenter", handleFileEnter, false);
-    dropBox.addEventListener("dragleave", handleFileLeave, false);
     dropBox.addEventListener("drop", handleFileSelect, false);
 
     $("#upload").on("change", function(e) {
@@ -296,12 +291,6 @@ $(function() {
         e.stopPropagation();
         e.preventDefault();
         e.dataTransfer.dropEffect = "copy";
-
-        $("#canvas").find(".drop").addClass("show");
-    }
-
-    function handleFileLeave(e) {
-        $("#canvas").find(".drop").removeClass("show");
     }
 
     function handleFileSelect(e) {
@@ -353,6 +342,7 @@ $(function() {
                 canvas.add(img);
                 canvas.item(0).hasControls = false;
                 canvas.item(0).borderColor = "transparent";
+                canvas.setActiveObject(canvas.item(0));
                 canvas.renderAll();
                 initMouseWheel(canvas);
                 return canvas;
@@ -363,7 +353,6 @@ $(function() {
             canvas.on("object:moving", function(e){
                 imageLeft = e.target.left;
                 imageTop = e.target.top;
-                // console.log(e.target.width);
             });
 
 
@@ -373,111 +362,162 @@ $(function() {
                 nc.setAttribute("id","c");
                 nc.setAttribute("width",cw);
                 nc.setAttribute("height",ch);
-                $("body").append(nc);
+                $("#canvas").append(nc);
             }
 
-            $("#apply").click(function() {
+            $("#new").click(function(){
+                $("#canvas").find(".drop").addClass("show");
+                $("#canvas").find(".upper-canvas ").remove();
+                canvas.item(0).remove();
+            });
+
+            $("#save").click(function() {
                 var Scale = imageScale;
                 canvas.setActiveObject(canvas.item(0));
                 img = canvas.getActiveObject();
 
-                // if (typeof(Scale) == "undefined"){
-                // Scale = scaleCoeff;
-                // }
+                var ch = canvas.height,
+                    cw = canvas.width;
 
-                // console.log(Scale);
+                img.scale(1);
+                console.log(img.width);
+                console.log(img.height);
+                canvas.setWidth(img.width);
+                canvas.setHeight(img.height);
                 img.left = 0;
                 img.top = 0;
-                img.scale(1);
-                canvas.width = image.width;
-                canvas.height = image.height;
-                var imgSaved = canvas.toDataURL("image/png");
-                console.log("saved:",imgSaved);
+                img.originX = "left";
+                img.originY = "top";
+                canvas.calcOffset();
 
-                // recreateCanvas();
-                // image = new Image(); 
-                // image.src = (imgSaved);
-                // appliedFilters = Array();
-                // canvas = create(image,imageLeft,imageTop);
-                // canvas.setActiveObject(canvas.item(0));
-                // canvas.renderAll();
+                var imgSaved = canvas.toDataURL("image/png");
+                console.log(imgSaved);
+
+
+                var image = new Image(); 
+                image.src = imgSaved;
+                canvas.item(0).remove();
+
+                $("#canvas").find(".upper-canvas ").remove();
+
+                canvas.setWidth(cw);
+                canvas.setHeight(ch);
+                console.log("cw:",cw,"ch:",ch);
+                canvas = create(image,100,100);
+
+                window.open(imgSaved,"image");
+            });
+
+//////////////////////////////////////////////////////////////////// Image Crop
+
+           $('#imageCrop').click(function(){
+
+            if ($("#rotate").prop("checked")){
+                alert("can't crop rotated image :'(");
+                return false;
+            }
+
+               var crop = new fabric.Rect({
+                    left: x/2-100,
+                    top: y/2-100,
+                    width:100,
+                    height:100,
+                    fill: "red",
+                    opacity: .3,
+               });
+               canvas.add(crop);
+               canvas.setActiveObject(canvas.item(1));
+
+               $("#crop").click(function(){
+                    var selection = canvas.item(1),
+                        sx = selection.left,
+                        sy = selection.top,
+                        ssx = selection.scaleX,
+                        ssy = selection.scaleY;
+
+                    var oImage = canvas.item(0);
+                    var ix = oImage.left,
+                        iy = oImage.top,
+                        isx = oImage.scaleX,// equal to isy
+                        isy = oImage.scaleY;// equal to isx
+
+                    console.log("ix:",ix,"iy:",iy);
+
+
+                    ix = ix - (oImage.width*isx)/2;
+                    iy = iy - (oImage.height*isy)/2;
+                    
+                    console.log("ix:",ix,"iy:",iy);
+
+                    realX = (sx - ix)*(1/isx);
+                    realY = (sy - iy)*(1/isy);
+                    realW = (100*ssx)*(1/isx);
+                    realH = (100*ssy)*(1/isy);
+                    console.log("realX:",realX,"realY:",realY,"is:",isx,"realW:",realW,"realH:",realH);
+
+                    canvas.renderAll();
+
+
+
+                    canvas.remove(canvas.item(1));
+                
+/////////////////////////////////////////////////////////////////
+
+
+                var Scale = imageScale;
+                canvas.setActiveObject(canvas.item(0));
+                img = canvas.getActiveObject();
+
+                var ch = canvas.height,
+                    cw = canvas.width;
+
+                img.scale(1);
+                console.log(img.width);
+                console.log(img.height);
+                canvas.setWidth(img.width);
+                canvas.setHeight(img.height);
+                img.left = 0;
+                img.top = 0;
+                img.originX = "left";
+                img.originY = "top";
+                canvas.calcOffset();
+                canvas.width = img.width;
+                canvas.height = img.height;
+                var dataURL = canvas.toDataURL({
+                        left: realX,
+                        top: realY,
+                        width: realW,
+                        height: realH
+                    });
+                console.log("saved",dataURL);
+
+                var image = new Image(); 
+                image.src = dataURL;
+                canvas.item(0).remove();
+
+                $("#canvas").find(".upper-canvas ").remove();
+
+                canvas.setWidth(cw);
+                canvas.setHeight(ch);
+                console.log("cw:",cw,"ch:",ch);
+                canvas = create(image,100,100);
 
             });
 
-           //////////////////////////////// image crop
-
-$('#imageCrop').click(function(){
-
-   var crop = new fabric.Rect({
-        left: x/2-100,
-        top: y/2-100,
-        width:100,
-        height:100,
-        fill: "red",
-        opacity: .3
-   });
-   canvas.add(crop);
-   canvas.setActiveObject(canvas.item(1));
-
-// canvas recreation with crop
-   $("#crop").click(function(){
-        var selection = canvas.item(1),
-            sx = selection.left,
-            sy = selection.top,
-            ssx = selection.scaleX,
-            ssy = selection.scaleY;
-        var oImage = canvas.item(0);
-        var ix = oImage.left,
-            iy = oImage.top,
-            isx = oImage.scaleX,// equal to isy
-            isy = oImage.scaleY;// equal to isx
-
-// drawPoint(ix,iy,canvas);
-// drawPoint(sx,sy,canvas);
-
-        realX = (sx - ix)*(1/isx);
-        realY = (sy - iy)*(1/isy);
-        realW = (100*ssx)*(1/isx);
-        realH = (100*ssy)*(1/isy);
-        console.log("realX:",realX,"realY:",realY,"is:",isx,"realW:",realW,"realH:",realH);
-
-
-        var shape = canvas.item(1);
-        canvas.remove(shape);
-        canvas.clipTo = function (ctx) {
-          shape.render(ctx);
-        };
-                // canvas.remove(canvas.item(1));
-                var dataURL = canvas.toDataURL({
-                    left: sx,
-                    top: sy,
-                    width: 100*ssx,
-                    height: 100*ssy
-                });
-        console.log(dataURL);
-
-        var image = new Image(); 
-        image.src = dataURL;
-
-        recreateCanvas();
-        create(image,100,100);
-   });
-
-   $("#cancel").click(function(){
-        canvas.item(1).remove();        
-        return;
-   });
+               $("#cancel").click(function(){
+                    canvas.item(1).remove();        
+                    return;
+               });
+      
+            }); // image crop
   
-}); // image crop
 
 
             // mouse wheel handle
             function initMouseWheel(canvas) {
                 $(canvas.wrapperEl).on("mousewheel", function(e){
                 var target = canvas.findTarget(e);
-                // console.log(e.originalEvent.wheelDelta);
-                var delta = e.originalEvent.wheelDelta / 6000;
-                // console.log(delta);
+                var delta = e.originalEvent.wheelDelta / 3000;
                 if (target) {
                     target.scaleX += delta;
                     target.scaleY += delta;
@@ -494,7 +534,6 @@ $('#imageCrop').click(function(){
                     }
                     target.setCoords();
                     imageScale = target.scaleX;
-                    // console.log(imageScale);
                     canvas.renderAll();
                     return false;
                 }
@@ -523,7 +562,6 @@ $('#imageCrop').click(function(){
                 img.filters[idx] = filter;
                 img.applyFilters(canvas.renderAll.bind(canvas));
                 appliedFilters[idx] = filter;
-                // console.log(img.src);
             }
 
 
@@ -535,6 +573,8 @@ $('#imageCrop').click(function(){
                     obj.applyFilters(canvas.renderAll.bind(canvas));
                 }
             }
+
+
 
             $("#grayscale").click(function() {
                 applyFilter(0, this.checked && new f.Grayscale());
@@ -583,6 +623,7 @@ $('#imageCrop').click(function(){
                 applyFilterValue(14, "lightness", parseInt(this.value, 10));
             });
 
+
             $("#rotate").click(function() {
                 canvas.setActiveObject(canvas.item(0));
                 var img = canvas.getActiveObject(),
@@ -601,6 +642,8 @@ $('#imageCrop').click(function(){
                     canvas.renderAll();
                 }
             });
+
+            
 
             $("#flipx").click(function() {
                 var img = canvas.getActiveObject();

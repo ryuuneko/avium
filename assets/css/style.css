@@ -171,6 +171,7 @@ input[type='range']::-moz-range-thumb {
 html,
 body {
   height: 100%;
+  width: 100%;
   min-height: 100%;
   margin: 0;
   padding: 0;
@@ -276,6 +277,14 @@ div.control.upload {
   font-family: comfortaaregular, sans-serif;
   font-size: 14px;
 }
+.pull .control + div.crop .control > span {
+  font-family: comfortaaregular, sans-serif;
+  font-size: 14px;
+}
+#new > span {
+  font-family: comfortaaregular, sans-serif;
+  font-size: 30px;
+}
 .pull .control + div .range {
   height: 69px;
   width: 360px;
@@ -329,7 +338,7 @@ input[type="button"] {
   height: 100%;
   min-height: 100%;
   width: 100%;
-  display: table;
+  /*display: table;*/
 }
 #canvas .drop {
   width: 100%;
@@ -352,4 +361,9 @@ input[type="button"] {
 }
 #c:active {
   cursor: move;
+}
+
+.drop{
+  position:absolute;
+  top:40%;
 }
